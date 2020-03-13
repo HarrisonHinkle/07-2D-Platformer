@@ -1,4 +1,4 @@
-# E08b-Debugging
+# 07-2D Platformer
 
 As usual, Fork and Clone this repository.
 
