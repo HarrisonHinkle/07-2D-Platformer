@@ -2,6 +2,7 @@ extends Actor
 
 
 export var stomp_impulse: = 600.0
+var jumpcounter=0
 
 
 func _on_StompDetector_area_entered(area: Area2D) -> void:
@@ -20,13 +21,19 @@ func _physics_process(delta: float) -> void:
 	_velocity = move_and_slide_with_snap(
 		_velocity, snap, FLOOR_NORMAL, true
 	)
+	if Input.is_action_just_pressed("jump"):
+		doublejump()
+	if is_on_floor():
+		jumpcounter = 0
+	if position.y > 1300:
+		die()
 
 
 func get_direction() -> Vector2:
 	return Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
-		-Input.get_action_strength("jump") if is_on_floor() and Input.is_action_just_pressed("jump") else 0.0
-	)
+		-Input.get_action_strength("jump") 
+		if Input.is_action_just_pressed("jump") and jumpcounter < 2 else 0.0)
 
 
 func calculate_move_velocity(
@@ -42,6 +49,7 @@ func calculate_move_velocity(
 	if is_jump_interrupted:
 		velocity.y = 0.0
 	return velocity
+	
 
 
 func calculate_stomp_velocity(linear_velocity: Vector2, stomp_impulse: float) -> Vector2:
@@ -52,3 +60,6 @@ func calculate_stomp_velocity(linear_velocity: Vector2, stomp_impulse: float) ->
 func die() -> void:
 	PlayerData.deaths += 1
 	queue_free()
+	
+func doublejump():
+	jumpcounter += 1

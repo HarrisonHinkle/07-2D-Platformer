@@ -1,18 +1,36 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/Actors/Player.gd" type="Script" id=1]
-[ext_resource path="res://assets/player.png" type="Texture" id=2]
+[ext_resource path="res://assets/block.png" type="Texture" id=2]
 
-[sub_resource type="OccluderPolygon2D" id=1]
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 0, 192, 192, 192 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 8 ), SubResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="OccluderPolygon2D" id=4]
 polygon = PoolVector2Array( -47.7193, -80.1353, -45.552, -86.1556, -40.2541, -93.1392, -32.7889, -96.9922, 32.4715, -96.5106, 38.7327, -94.5841, 44.9938, -89.0453, 47.6427, -82.0618, 48.1244, -17.5238, 45.957, -10.2994, 41.6224, -5.00154, 33.9164, 0.296349, -31.1032, -0.18528, -39.5316, -4.2791, -45.0704, -10.0586, -47.4785, -16.5606 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 40, 41 )
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 45.6478, 41.7715 )
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 42.7375, 34.7886 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 48, 8 )
 
 [node name="Player" type="KinematicBody2D"]
@@ -25,24 +43,31 @@ stomp_impulse = 1600.0
 current = true
 process_mode = 0
 limit_left = 0
-limit_bottom = 1080
-limit_smoothed = true
+limit_bottom = 1143
 smoothing_enabled = true
 drag_margin_left = 0.0
 drag_margin_right = 0.0
 editor_draw_limits = true
 editor_draw_drag_margin = true
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-offset = Vector2( 0, -48.3333 )
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.592941, 0 )
+scale = Vector2( 1.00618, 1 )
+frames = SubResource( 3 )
+frame = 5
+speed_scale = 0.8
+playing = true
+offset = Vector2( 0, -32 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite"]
-occluder = SubResource( 1 )
+occluder = SubResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -41 )
-shape = SubResource( 2 )
+shape = SubResource( 5 )
 
 [node name="EnemyDetector" type="Area2D" parent="."]
 collision_layer = 0
@@ -50,14 +75,15 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
 modulate = Color( 0.337255, 0.223529, 1, 1 )
-position = Vector2( 0, -48 )
-shape = SubResource( 3 )
+position = Vector2( -3.05176e-05, -45.6283 )
+shape = SubResource( 6 )
 
 [node name="StompDetector" type="Area2D" parent="."]
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StompDetector"]
 modulate = Color( 0.337255, 0.223529, 1, 1 )
-shape = SubResource( 4 )
+position = Vector2( -0.592926, -4.74352 )
+shape = SubResource( 7 )
 [connection signal="body_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_body_entered"]
 [connection signal="area_entered" from="StompDetector" to="." method="_on_StompDetector_area_entered"]
