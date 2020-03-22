@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/ui_theme.tres" type="Theme" id=1]
 [ext_resource path="res://assets/background.png" type="Texture" id=2]
 [ext_resource path="res://src/UserInterface/Title.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/UserInterface/SceneChangeButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/UserInterface/QuitButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/Screens/Load.gd" type="Script" id=6]
 
 [node name="MainScreen" type="Control"]
 anchor_right = 1.0
@@ -50,11 +51,19 @@ __meta__ = {
 
 [node name="PlayButton" parent="Menu" instance=ExtResource( 4 )]
 margin_right = 360.0
-margin_bottom = 73.0
+margin_bottom = 47.0
 text = "Play"
 next_scene_path = "res://src/Levels/Level01.tscn"
 
 [node name="QuitButton" parent="Menu" instance=ExtResource( 5 )]
-margin_top = 81.0
+margin_top = 55.0
 margin_right = 360.0
-margin_bottom = 154.0
+margin_bottom = 102.0
+
+[node name="Load" type="Button" parent="Menu"]
+margin_top = 110.0
+margin_right = 360.0
+margin_bottom = 153.0
+text = "Load"
+script = ExtResource( 6 )
+[connection signal="button_up" from="Menu/Load" to="Menu/Load" method="_on_Load_button_up"]
